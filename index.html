@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>看影片學跳舞</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 頁面頭部 -->
+        <header class="app-header">
+            <h1 class="app-title">看影片學跳舞</h1>
+        </header>
+
+        <!-- 主要內容區 -->
+        <main class="main-content">
+            <!-- 上傳區域 -->
+            <section class="upload-section" id="uploadSection">
+                <div class="upload-zone" id="uploadZone">
+                    <div class="upload-icon">🎥</div>
+                    <h2 class="upload-title">選擇或拖曳影片檔案</h2>
+                    <p class="upload-description">支援 MP4、MOV、AVI、WebM 格式</p>
+                    <button class="upload-button" id="uploadButton">
+                        選擇影片檔案
+                    </button>
+                    <input type="file" id="fileInput" accept="video/*" hidden>
+                </div>
+            </section>
+
+            <!-- 影片播放區域 -->
+            <section class="video-section" id="videoSection" style="display: none;">
+                <div class="video-controls">
+                    <h3>影片播放器</h3>
+                    <div class="control-buttons">
+                        <button class="control-btn" id="rewindBtn">
+                            <span>⏪</span>
+                            <span>-10s</span>
+                        </button>
+                        <button class="control-btn" id="playPauseBtn">
+                            <span id="playPauseIcon">▶️</span>
+                            <span id="playPauseText">播放</span>
+                        </button>
+                        <button class="control-btn" id="forwardBtn">
+                            <span>⏩</span>
+                            <span>+10s</span>
+                        </button>
+                        <button class="control-btn" id="flipToggleBtn">
+                            <span>🔄</span>
+                            <span id="flipText">翻轉</span>
+                        </button>
+                        <button class="control-btn" id="fullscreenBtn">
+                            <span>⛶</span>
+                            <span>全螢幕</span>
+                        </button>
+                        <button class="control-btn secondary" id="newVideoBtn">
+                            <span>📁</span>
+                            <span>選擇新影片</span>
+                        </button>
+                    </div>
+                    
+                    <!-- 進度條控制 -->
+                    <div class="progress-container">
+                        <div class="time-display">
+                            <span id="currentTime">0:00</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <input type="range" id="progressBar" class="progress-bar" min="0" max="100" value="0">
+                        </div>
+                        <div class="time-display">
+                            <span id="totalTime">0:00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 影片播放器 -->
+                <div class="video-player" id="videoPlayer">
+                    <video 
+                        id="mainVideo" 
+                        controls 
+                        preload="metadata"
+                        playsinline
+                        disablepictureinpicture
+                        controlslist="nodownload nofullscreen noremoteplaybook"
+                    >
+                        您的瀏覽器不支援影片播放
+                    </video>
+                    
+                    <!-- 全螢幕控制覆蓋層 -->
+                    <div class="fullscreen-overlay" id="fullscreenOverlay" style="display: none;">
+                        <!-- 全螢幕進度條 -->
+                        <div class="fullscreen-progress" id="fullscreenProgress">
+                            <div class="fs-progress-container">
+                                <div class="fs-time-display">
+                                    <span id="fsCurrentTime">0:00</span>
+                                </div>
+                                <div class="fs-progress-bar-container">
+                                    <input type="range" id="fsProgressBar" class="fs-progress-bar" min="0" max="100" value="0">
+                                </div>
+                                <div class="fs-time-display">
+                                    <span id="fsTotalTime">0:00</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="fullscreen-controls">
+                            <button class="fs-btn" id="fsRewindBtn">
+                                <span>⏪</span>
+                            </button>
+                            <button class="fs-btn" id="fsPlayPauseBtn">
+                                <span id="fsPlayPauseIcon">▶️</span>
+                            </button>
+                            <button class="fs-btn" id="fsForwardBtn">
+                                <span>⏩</span>
+                            </button>
+                            <button class="fs-btn" id="fsFlipBtn">
+                                <span>🔄</span>
+                            </button>
+                            <button class="fs-btn" id="fsExitBtn">
+                                <span>❌</span>
+                            </button>
+                        </div>
+                        <div class="fullscreen-info">
+                            <span id="fsFlipStatus">原始方向</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 影片資訊 -->
+                <div class="video-info">
+                    <div class="info-item">
+                        <span class="info-label">檔案名稱：</span>
+                        <span class="info-value" id="videoFileName">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">解析度：</span>
+                        <span class="info-value" id="videoResolution">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">時長：</span>
+                        <span class="info-value" id="videoDuration">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">當前狀態：</span>
+                        <span class="info-value" id="videoStatus">原始方向</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- 頁面底部 -->
+        <footer class="app-footer">
+            <p>🔒 所有處理均在您的瀏覽器本地進行，保護隱私安全</p>
+        </footer>
+
+        <!-- 通知系統 -->
+        <div class="notification-container" id="notificationContainer"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
