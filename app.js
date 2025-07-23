@@ -81,8 +81,14 @@ class VideoFlipApp {
     bindEvents() {
         // 檔案上傳事件
         this.fileInput.addEventListener('change', (e) => this.handleFileSelect(e));
-        this.uploadButton.addEventListener('click', () => this.fileInput.click());
-        this.uploadZone.addEventListener('click', () => this.fileInput.click());
+        this.uploadButton.addEventListener('click', () => {
+            this.fileInput.value = ''; // 清空檔案輸入，確保每次都能觸發 change 事件
+            this.fileInput.click();
+        });
+        this.uploadZone.addEventListener('click', () => {
+            this.fileInput.value = ''; // 清空檔案輸入，確保每次都能觸發 change 事件
+            this.fileInput.click();
+        });
         
         // 拖拽事件
         this.uploadZone.addEventListener('dragover', (e) => this.handleDragOver(e));
